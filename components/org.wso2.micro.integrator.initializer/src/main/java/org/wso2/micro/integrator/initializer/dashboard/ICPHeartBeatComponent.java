@@ -397,6 +397,10 @@ public class ICPHeartBeatComponent {
 
     private static String getICPApiHostname() {
         try {
+            String managementHostname = getConfigValue(ICP_CONFIG_MANAGEMENT_HOSTNAME);
+            if (!StringUtils.isEmpty(managementHostname)) {
+                return managementHostname;
+            }
             Object configured = configs.get(HOSTNAME);
             if (configured != null && !StringUtils.isEmpty(configured.toString())) {
                 return configured.toString();
@@ -414,12 +418,16 @@ public class ICPHeartBeatComponent {
     /**
      * Resolves the ICP API port to report in the ICP heartbeat.
      * Priority:
-     * 1) Calculated from `offset` (if provided)
-     * 2) Default ICP API port (9164)
+     * 1) `icp_config.management_port` (if provided)
+     * 2) Calculated from `server.offset` (if provided)
+     * 3) Default ICP API port (9164)
      */
     private static String getICPAPIPort() {
         try {
-            // Read offset only from dashboard config (no legacy checks)
+            String managementPort = getConfigValue(ICP_CONFIG_MANAGEMENT_PORT);
+            if (!StringUtils.isEmpty(managementPort)) {
+                return managementPort;
+            }
             int offset = 0;
             Object offsetCfg = configs.get(PORT_OFFSET);
             if (offsetCfg != null && !StringUtils.isEmpty(offsetCfg.toString())) {
