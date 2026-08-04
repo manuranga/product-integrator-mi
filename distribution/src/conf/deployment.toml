@@ -111,3 +111,9 @@ algorithm = "AES"
 
 # [dashboard_config]
 # dashboard_url = "https://localhost:9743/dashboard/api/"
+
+# [icp_config]
+# Externally reachable MI management endpoint advertised to ICP.
+# Defaults to server.hostname and the actual management port.
+# management_hostname = "mi.example.com"
+# management_port = 443
